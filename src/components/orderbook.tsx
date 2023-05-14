@@ -16,7 +16,10 @@ type Props = {
   quoteToken: any;
 };
 
-export const OrderBook = memo(({ baseToken, quoteToken }: Props) => {
+export const OrderBook = memo(function OrderBook({
+  baseToken,
+  quoteToken,
+}: Props) {
   const selector = useAppSelector((state) => state.app);
   const dispatch = useAppDispatch();
   const { sendJsonMessage, getWebSocket } = useWebSocket(WebSocketUrl, {

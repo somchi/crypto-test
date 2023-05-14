@@ -47,7 +47,7 @@ export const Dropdown = ({ onClick, currAsset, from }: Props) => {
       return () => {
         document.removeEventListener('mousedown', handleClickOutside);
       };
-    }, [ref, visibility]);
+    }, [ref]);
   };
 
   useOutsideAlerter(wrapperRef);

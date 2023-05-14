@@ -10,7 +10,7 @@ type Props = {
   data: any;
 };
 
-export const AssetCard = memo(({ data }: Props) => {
+export const AssetCard = memo(function AssetCard({ data }: Props) {
   const router = useRouter();
   const dispatch = useAppDispatch();
   const [asset, setAsset] = useState<any>({} as any);
@@ -45,7 +45,11 @@ export const AssetCard = memo(({ data }: Props) => {
           id="icon"
           className="grid mb-[-22px] w-24 h-24  p-6 bg-main-gradientStart  justify-center"
         >
-          <img className="w-full h-full rounded-full" src={data.logoURI} />
+          <img
+            className="w-full h-full rounded-full"
+            src={data.logoURI}
+            alt={data.symbol}
+          />
         </div>
       </div>
       <div id="assest-card" className="grid rounded-2xl w-[290px]">
