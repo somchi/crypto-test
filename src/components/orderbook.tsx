@@ -2,12 +2,7 @@ import { useAppDispatch, useAppSelector } from '@/store/hooks';
 import { OrderBookTable } from './orderBookTable';
 import { memo, useEffect } from 'react';
 import { useWebSocket } from 'react-use-websocket/dist/lib/use-websocket';
-import {
-  AskRequestId,
-  BidRequestId,
-  ORDER_TYPE,
-  WebSocketUrl,
-} from '@/utils/constants';
+import { RequestId, ORDER_TYPE, WebSocketUrl } from '@/utils/constants';
 import { formatAsksData, formatBidsData } from '@/utils/helper';
 import { setAsks, setBids } from '@/store/reducers/app.reducers';
 
@@ -27,46 +22,18 @@ export const OrderBook = memo(function OrderBook({
     onMessage: (event: WebSocketEventMap['message']) => processMessages(event),
   });
 
-  // useEffect(() => {
-  //   const message = {
-  //     type: 'subscribe',
-  //     channel: 'orders',
-  //     requestId: BidRequestId,
-  //     payload: {
-  //       takerToken: quoteToken.address,
-  //       makerToken: baseToken.address,
-  //     },
-  //   };
-  //   sendJsonMessage(message);
-  // }, [sendJsonMessage, getWebSocket]);
-
-  // useEffect(() => {
-  //   const message = {
-  //     type: 'subscribe',
-  //     channel: 'orders',
-  //     requestId: AskRequestId,
-  //     payload: {
-  //       takerToken: quoteToken.address,
-  //       makerToken: baseToken.address,
-  //     },
-  //   };
-  //   sendJsonMessage(message);
-  // }, [sendJsonMessage, getWebSocket]);
-
   useEffect(() => {
     const message = {
       type: 'subscribe',
       channel: 'orders',
-      requestId: AskRequestId,
+      requestId: RequestId,
     };
     sendJsonMessage(message);
   }, [sendJsonMessage, getWebSocket]);
 
   const processMessages = (event: any) => {
     const response = JSON.parse(event.data);
-    const requestId = response.requestId;
     const payload = response.payload;
-    // const records = { records: [...payload] };
 
     const data = [...payload];
     const bids = data.filter(
@@ -99,22 +66,6 @@ export const OrderBook = memo(function OrderBook({
       );
       dispatch(setAsks(formatedAsks));
     }
-
-    // if (requestId === BidRequestId) {
-    //   const bids = formatBidsData(
-    //     records,
-    //     quoteToken.decimals,
-    //     baseToken.decimals
-    //   );
-    //   dispatch(setBids(bids));
-    // } else {
-    //   const asks = formatAsksData(
-    //     records,
-    //     quoteToken.decimals,
-    //     baseToken.decimals
-    //   );
-    //   dispatch(setAsks(asks));
-    // }
   };
 
   return (

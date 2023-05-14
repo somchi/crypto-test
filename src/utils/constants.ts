@@ -27,6 +27,4 @@ export const ORDERBOOK_LEVELS = 20;
 
 export const WebSocketUrl = 'wss://api.0x.org/orderbook/v1';
 
-export const AskRequestId = '123e4567-e89b-12d3-a456-426655440000';
-
-export const BidRequestId = '124e4567-e89b-12d3-a456-426655440000';
+export const RequestId = '123e4567-e89b-12d3-a456-426655440000';

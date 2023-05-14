@@ -45,7 +45,7 @@ export const OrderBookTable = memo(function OrderBookTable({
           </>
         ) : (
           <>
-            <span className="bg-red-800 w-1/3">
+            <span className="text-red-800 w-1/3">
               {formatNumber(item.total, 2)}
             </span>
             <span className="w-1/3 text-right">
