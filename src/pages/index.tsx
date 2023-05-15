@@ -17,7 +17,7 @@ const Home = () => {
     ));
   };
   return (
-    <main className="px-20 py-12">
+    <main className="grid px-4 md:px-20 py-12 items-center">
       <div className="flex items-center mb-4">
         <span>
           <Image

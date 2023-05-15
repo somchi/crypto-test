@@ -118,7 +118,8 @@ const Asset = ({ query }: Props) => {
             <label className="text-white mr-2">You pay </label>
             <Dropdown
               from={PAIRNAMES.QUOTE}
-              currAsset={quoteToken}
+              quote={quoteToken}
+              base={baseToken}
               onClick={resetToken}
             />
           </div>
@@ -126,7 +127,8 @@ const Asset = ({ query }: Props) => {
             <label className="text-white mr-2">You receive </label>
             <Dropdown
               from={PAIRNAMES.BASE}
-              currAsset={baseToken}
+              base={baseToken}
+              quote={quoteToken}
               onClick={resetToken}
             />
           </div>

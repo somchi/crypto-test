@@ -71,7 +71,9 @@ export const getOrderBook = async (baseToken: string, quoteToken: string) => {
     quoteToken,
     baseToken,
   });
-  const response = await fetch(url);
+  const response = await fetch(url, {
+    headers: { '0x-api-key': '34d20cc8-82a7-47bc-99e1-a82581f20000' },
+  });
   const orderbook = await response.json();
   return orderbook;
 };

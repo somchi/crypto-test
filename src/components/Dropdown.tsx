@@ -1,13 +1,15 @@
 import { useEffect, useRef, useState } from 'react';
 import tokens from '../pages/api/tokens.json';
+import { PAIRNAMES } from '@/utils/constants';
 
 type Props = {
-  currAsset: any;
+  base: any;
+  quote: any;
   onClick: (assest: any, from?: number) => void;
   from?: number;
 };
 
-export const Dropdown = ({ onClick, currAsset, from }: Props) => {
+export const Dropdown = ({ onClick, base, quote, from }: Props) => {
   const [visibility, setVisibility] = useState<boolean>(false);
   const wrapperRef = useRef(null);
 
@@ -47,7 +49,7 @@ export const Dropdown = ({ onClick, currAsset, from }: Props) => {
       return () => {
         document.removeEventListener('mousedown', handleClickOutside);
       };
-    }, [ref]);
+    }, [ref, visibility]);
   };
 
   useOutsideAlerter(wrapperRef);
@@ -60,10 +62,12 @@ export const Dropdown = ({ onClick, currAsset, from }: Props) => {
       >
         <img
           className="w-5 h-5 rounded-full"
-          src={currAsset?.logoURI}
-          alt={currAsset?.symbol}
+          src={from === PAIRNAMES.BASE ? base?.logoURI : quote?.logoURI}
+          alt={from === PAIRNAMES.BASE ? base?.symbol : quote?.symbol}
         />
-        <span className="text-white ml-1">{currAsset.symbol}</span>
+        <span className="text-white ml-1">
+          {from === PAIRNAMES.BASE ? base?.symbol : quote?.symbol}
+        </span>
         <span className="absolute inset-y-0 right-0 flex items-center pl-1">
           <button
             type="button"
