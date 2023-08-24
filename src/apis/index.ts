@@ -1,6 +1,6 @@
-import { CURRENCIES, DEFAULT_CURRENCIES } from '@/utils/constants';
-import { generateUrl } from '@/utils/helper';
-import { PairPrice } from '@/utils/types';
+import { CURRENCIES, DEFAULT_CURRENCIES } from '../utils/constants';
+import { generateUrl } from '../utils/helper-old';
+import { PairPrice } from '../utils/types';
 
 const baseURL = 'https://api.coingecko.com/api/v3';
 const oxBaseURL = 'https://api.0x.org';

@@ -1,90 +1,112 @@
-import { ORDER_TYPE } from '@/utils/constants';
-import { formatNumber } from '@/utils/helper';
-import { Order } from '@/utils/types';
+import { useState, useEffect, useMemo } from 'react';
+import { ORDERBOOK_LEVELS, ORDER_TYPE } from '../utils/constants';
 import { memo } from 'react';
+import { formatNum } from '../utils/helper';
+import { BitOrder } from '../utils/bit-types';
+import { useAppSelector } from '../store/hooks';
 
 type Props = {
-  data: Order[];
+  data: BitOrder[];
   orderType: number;
-  quoteName: string;
-  baseName: string;
+  precision: number;
 };
 
 export const OrderBookTable = memo(function OrderBookTable({
   data,
   orderType,
-  quoteName,
-  baseName,
+  precision,
 }: Props) {
+  const DepthVisualizerColors = {
+    BIDS: '#113534',
+    ASKS: '#3d1e28',
+  };
+
+  const [deviceWidth, setDeviceWidth] = useState<number>(0);
+  const sel = useAppSelector((state) => state.bit);
+
+  useEffect(() => {
+    const width = window.innerWidth;
+    setDeviceWidth(width);
+  }, []);
+
   const renderOrders = () => {
-    const sortedOrder: Order[] = [...data].sort((curr: Order, nxt: Order) => {
-      let result: number = 0;
-      if (orderType === ORDER_TYPE.ASK) {
-        result = nxt.price - curr.price;
-      } else {
-        result = curr.price - nxt.price;
+    const sortData = [...data].sort(
+      (currItem: BitOrder, nextItem: BitOrder) => {
+        if (orderType === ORDER_TYPE.BID || deviceWidth <= 800) {
+          return nextItem.price - currItem.price;
+        }
+        return currItem.price - nextItem.price;
       }
-      return result;
+    );
+    return sortData.map((item: any, index: number) => {
+      const depth = item.depth;
+      const left =
+        orderType === ORDER_TYPE.BID || deviceWidth <= 800
+          ? `${100 - depth}%`
+          : 0;
+      return (
+        <div
+          key={item.amount + index + orderType}
+          style={{ position: 'relative' }}
+        >
+          <div
+            style={{
+              backgroundColor: `${
+                orderType === ORDER_TYPE.BID
+                  ? DepthVisualizerColors.BIDS
+                  : DepthVisualizerColors.ASKS
+              }`,
+              position: 'relative',
+              top: 21,
+              width: `${depth}%`,
+              height: '1.2rem',
+              marginTop: -24,
+              zIndex: 0,
+              left: left,
+            }}
+          ></div>
+          {orderType === ORDER_TYPE.BID ? (
+            <div className="flex justify-between relative">
+              <span className="text-right">{formatNum(item.count)}</span>
+              <span className="text-right">{formatNum(item.amount)}</span>
+              <span className="text-right">{formatNum(item.total)}</span>
+              <span className="text-right">{formatNum(item.price)}</span>
+            </div>
+          ) : (
+            <div className="flex justify-between relative md:ml-2">
+              <span className="text-right">{formatNum(item.price)}</span>
+              <span className="text-right">{formatNum(item.total)}</span>
+              <span className="text-right">{formatNum(item.amount)}</span>
+              <span className="text-right">{formatNum(item.count)}</span>
+            </div>
+          )}
+        </div>
+      );
     });
-    return sortedOrder?.map((item: Order, index: number) => (
-      <div
-        key={item.quantity + index}
-        className="text-gray-300 text-sm flex justify-between mb-[0.08rem]"
-      >
-        {orderType === ORDER_TYPE.BID ? (
-          <>
-            <span className="text-green-400 w-1/3">
-              {formatNumber(item.price, 6)}
-            </span>
-            <span className="w-1/3 text-right">
-              {formatNumber(item.quantity, 2)}
-            </span>
-            <span className="text-green-500 w-1/3 text-right">
-              {formatNumber(item.total, 2)}
-            </span>
-          </>
-        ) : (
-          <>
-            <span className="text-red-800 w-1/3">
-              {formatNumber(item.total, 2)}
-            </span>
-            <span className="w-1/3 text-right">
-              {formatNumber(item.quantity, 2)}
-            </span>
-            <span className="text-red-800 w-1/3 text-right">
-              {formatNumber(item.price, 6)}
-            </span>
-          </>
-        )}
+  };
+
+  const tableHeader = () => {
+    return orderType === ORDER_TYPE.BID ? (
+      <div className="flex justify-between">
+        <span className="text-right">COUNT</span>
+        <span className="text-right">AMOUNT</span>
+        <span className="text-right">TOTAL</span>
+        <span className="text-right">PRICE</span>
       </div>
-    ));
+    ) : (
+      <div className="flex justify-between md:ml-2">
+        <span className="text-right">PRICE</span>
+        <span className="text-right">TOTAL</span>
+        <span className="text-right">AMOUNT</span>
+        <span className="text-right">COUNT</span>
+      </div>
+    );
   };
 
   return (
-    <>
-      <div
-        className="table-fixed w-full md:w-[49.5%] text-gray-400
-       bg-slate-800 px-3 py-4"
-      >
-        {orderType === ORDER_TYPE.BID ? (
-          <div className="flex justify-between">
-            <span className="relative text-left w-1/3">
-              Price{`(${quoteName})`}
-            </span>
-            <span className="w-1/3 text-right">Qunatity{`(${baseName})`}</span>
-            <span className="w-1/3 text-right">Total{`(${baseName})`}</span>
-          </div>
-        ) : (
-          <div className="flex justify-between">
-            <span className="w-1/3">Total{`(${baseName})`}</span>
-            <span className="w-1/3 text-right">Qunatity{`(${baseName})`}</span>
-            <span className="relative text-right w-1/3">
-              Price{`(${quoteName})`}
-            </span>
-          </div>
-        )}
-        {renderOrders()}
-      </div>
-    </>
+    <div className="grid">
+      {tableHeader()}
+      {renderOrders()}
+    </div>
   );
 });

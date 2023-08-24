@@ -1,16 +1,16 @@
-import { getOrderBook } from '@/apis';
-import { Dropdown } from '@/components/Dropdown';
-import { OrderBook } from '@/components/orderbook';
-import { useAppDispatch, useAppSelector } from '@/store/hooks';
-import { clearState, setAsks, setBids } from '@/store/reducers/app.reducers';
-import { formatAsksData, formatBidsData, isStringEmpty } from '@/utils/helper';
 import { NextPageContext } from 'next';
 import { useEffect, useMemo, useState } from 'react';
 import assetTokens from '../api/tokens.json';
-
 import { useRouter } from 'next/router';
-import { PAIRNAMES } from '@/utils/constants';
-import { Loader } from '@/components/Loader';
+import { OrderBook } from 'components/orderbook1';
+import { Dropdown } from 'components/Dropdown';
+import { useAppDispatch, useAppSelector } from 'store/hooks';
+import { formatBitData, isStringEmpty } from 'utils/helper-old';
+import { clearState } from 'store/reducers/app.reducers';
+import { PAIRNAMES } from 'utils/constants';
+import { getPairOrder } from 'apis/bifinex';
+import { setRawAsks, setRawBid } from 'store/reducers/bit.reducers';
+import { Loader } from 'components/Loader';
 
 type Props = {
   query: any;
@@ -88,21 +88,17 @@ const Asset = ({ query }: Props) => {
     if (!baseToken || !quoteToken) return;
     setLoadingOrders(true);
     dispatch(clearState());
-    getOrderBook(quoteToken.address, baseToken.address).then((res) => {
-      const bids = formatBidsData(
-        res.bids,
-        quoteToken.decimals,
-        baseToken.decimals
-      );
-      const asks = formatAsksData(
-        res.asks,
-        quoteToken.decimals,
-        baseToken.decimals
-      );
-      dispatch(setBids(bids));
-      dispatch(setAsks(asks));
-      setLoadingOrders(false);
-    });
+    const pair = `${getPair.base}${getPair.quote}`;
+    getPairOrder(pair)
+      .then((res) => {
+        const formatData = formatBitData(res.data);
+        dispatch(setRawBid(formatData.bids));
+        dispatch(setRawAsks(formatData.asks));
+        setLoadingOrders(false);
+      })
+      .catch((err) => {
+        setLoadingOrders(false);
+      });
   };
 
   return (

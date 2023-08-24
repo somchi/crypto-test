@@ -1,10 +1,10 @@
-import { getCurrentAssestPrice, getTokenPrice } from '@/apis';
-import { ASSET } from '@/site-settings/site-navigation';
-import { useAppDispatch } from '@/store/hooks';
-import { setSelectedAsset } from '@/store/reducers/app.reducers';
-import { formatCurrency } from '@/utils/helper';
+import { getCurrentAssestPrice, getTokenPrice } from 'apis';
 import { useRouter } from 'next/router';
 import React, { memo, useEffect, useState } from 'react';
+import { ASSET } from 'site-settings/site-navigation';
+import { useAppDispatch } from 'store/hooks';
+import { setSelectedAsset } from 'store/reducers/app.reducers';
+import { formatCurrency } from 'utils/helper-old';
 
 type Props = {
   data: any;
@@ -33,10 +33,7 @@ export const AssetCard = memo(function AssetCard({ data }: Props) {
   };
 
   return (
-    <div
-      onClick={handleClick}
-      className="grid relative justify-items-center mr-12 cursor-pointer"
-    >
+    <div className="grid relative justify-items-center mr-12 cursor-pointer">
       <div
         id="head"
         className="bg-main-bg1 relative px-4 py-8 mb-[-54px] rounded-full z-10"

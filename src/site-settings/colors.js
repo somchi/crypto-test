@@ -11,4 +11,6 @@ module.exports = {
     gradientStart: 'rgba(98, 106, 136, 0.1)',
     gradientEnd: 'rgba(46, 49, 73, 0.1)',
   },
+  green: '#113534',
+  red: '#3d1e28',
 };

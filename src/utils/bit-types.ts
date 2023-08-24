@@ -14,19 +14,13 @@ export type Order = {
 };
 
 export type AppStore = {
-  selectedAsset: any;
-  orderBook: any;
-  bids: Order[];
-  asks: Order[];
-  prevBids: Order[];
-  prevAsks: Order[];
-};
-
-export type PairPrice = {
-  buyToken: string;
-  sellToken: string;
-  amount: number;
-  decimal: number;
+  bids: BitOrder[];
+  asks: BitOrder[];
+  rawAsks: BitOrder[];
+  rawBids: BitOrder[];
+  loading: boolean;
+  maxTotalAsks: number;
+  maxTotalBids: number;
 };
 
 export type BitOrder = {
