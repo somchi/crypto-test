@@ -33,10 +33,7 @@ export const AssetCard = memo(function AssetCard({ data }: Props) {
   };
 
   return (
-    <div
-      onClick={handleClick}
-      className="grid relative justify-items-center mr-12 cursor-pointer"
-    >
+    <div className="grid relative justify-items-center mr-12 cursor-pointer">
       <div
         id="head"
         className="bg-main-bg1 relative px-4 py-8 mb-[-54px] rounded-full z-10"
