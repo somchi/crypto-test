@@ -1,10 +1,10 @@
-import { getCurrentAssestPrice, getTokenPrice } from '@/apis';
-import { ASSET } from '@/site-settings/site-navigation';
-import { useAppDispatch } from '@/store/hooks';
-import { setSelectedAsset } from '@/store/reducers/app.reducers';
-import { formatCurrency } from '@/utils/helper';
+import { getCurrentAssestPrice, getTokenPrice } from 'apis';
 import { useRouter } from 'next/router';
 import React, { memo, useEffect, useState } from 'react';
+import { ASSET } from 'site-settings/site-navigation';
+import { useAppDispatch } from 'store/hooks';
+import { setSelectedAsset } from 'store/reducers/app.reducers';
+import { formatCurrency } from 'utils/helper-old';
 
 type Props = {
   data: any;

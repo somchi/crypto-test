@@ -1,6 +1,6 @@
-import { addTotalToOrder, compareOrders, formatBidsData } from '@/utils/helper';
-import { AppStore, Order } from '@/utils/types';
 import { PayloadAction, createSlice, current } from '@reduxjs/toolkit';
+import { addTotalToOrder, compareOrders } from 'utils/helper-old';
+import { AppStore, Order } from 'utils/types';
 
 const initialState: AppStore = {
   selectedAsset: {} as any,

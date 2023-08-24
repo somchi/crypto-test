@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 import tokens from '../pages/api/tokens.json';
-import { PAIRNAMES } from '@/utils/constants';
+import { PAIRNAMES } from 'utils/constants';
 
 type Props = {
   base: any;
